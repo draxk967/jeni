@@ -563,7 +563,7 @@ button {
 
 /* Input inferior */
 .chat-input-wrapper {
-  position: absolute;
+  position: fixed;
   left: 14px;
   right: 14px;
   bottom: calc(var(--chat-bottom-safe) + 14px);
@@ -1124,6 +1124,7 @@ button {
 
 /* Input menor e sem botão reload */
 .chat-input-wrapper {
+  position: fixed !important;
   left: 10px !important;
   right: 10px !important;
   bottom: calc(var(--chat-bottom-safe) + 8px) !important;
@@ -1413,6 +1414,8 @@ button {
 
 /* Input inferior */
 .chat-input-wrapper {
+  position: fixed !important;
+  position: fixed !important;
   left: 9px !important;
   right: 9px !important;
   bottom: calc(var(--chat-bottom-safe) + 8px) !important;
@@ -1981,7 +1984,7 @@ textarea {
 /* Ajuste final do layout: header não fixa, chat rola e input fica embaixo */
 .tg-chat {
   overflow-x: hidden !important;
-  overflow-y: auto !important;
+  overflow-y: hidden !important;
 }
 
 .topbar {
@@ -1993,12 +1996,12 @@ textarea {
 }
 
 .chat-body {
-  position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  right: auto !important;
-  bottom: auto !important;
-  overflow-y: visible !important;
+  position: absolute !important;
+  top: calc(var(--chat-top-safe) + 64px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  overflow-y: auto !important;
   overflow-x: hidden !important;
   padding: 0 10px calc(var(--chat-bottom-safe) + 68px) !important;
   margin-top: 0 !important;
