@@ -1978,13 +1978,14 @@ textarea {
   display: none !important;
 }
 
-/* Fixa o header como parte do conteúdo e desativa rolagem vertical */
+/* Ajuste final do layout: header não fixa, chat rola e input fica embaixo */
 .tg-chat {
   overflow-x: hidden !important;
+  overflow-y: auto !important;
 }
 
 .topbar {
-  position: relative !important;
+  position: static !important;
   top: auto !important;
   left: auto !important;
   right: auto !important;
@@ -1992,14 +1993,15 @@ textarea {
 }
 
 .chat-body {
-  position: absolute !important;
-  top: calc(var(--chat-top-safe) + 84px) !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: calc(var(--chat-bottom-safe) + 92px) !important;
-  overflow-y: auto !important;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  overflow-y: visible !important;
   overflow-x: hidden !important;
-  padding: 0 10px calc(var(--chat-bottom-safe) + 92px) !important;
+  padding: 0 10px calc(var(--chat-bottom-safe) + 68px) !important;
+  margin-top: 0 !important;
 }
 
 .bubble.with-reply-markup.is-payment .bubble-body,
