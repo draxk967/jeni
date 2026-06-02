@@ -1968,6 +1968,41 @@ textarea {
   display: none !important;
 }
 
+/* Fixa o header como parte do conteúdo e desativa rolagem vertical */
+.tg-chat {
+  overflow: hidden !important;
+}
+
+.topbar {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  margin: 14px 14px 0 !important;
+}
+
+.chat-body {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  overflow-y: hidden !important;
+  padding: 0 10px calc(var(--chat-bottom-safe) + 92px) !important;
+  margin-top: 72px !important;
+}
+
+.bubble.with-reply-markup.is-payment .bubble-body,
+.bubble.is-payment .bubble-body {
+  max-width: calc(100% - 20px) !important;
+  width: 100% !important;
+}
+
+.bubble.is-payment .quote-card {
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
 @keyframes mediaBubbleIn {
   from {
     opacity: 0;
