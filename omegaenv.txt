@@ -1,0 +1,2 @@
+Client_ID=srescaludo_ywik45cnxa8vrdfp
+Client_Secret=a8kgxkw8zasabwotjf941yyzy0yuyaeddj1fzhutj5blpzgsyishany636b53qvf
