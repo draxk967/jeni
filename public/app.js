@@ -4,8 +4,9 @@ const chatSubtitle = document.querySelector('.topbar-subtitle');
 const restartButton = document.getElementById('restart-flow');
 const messageInput = document.getElementById('message-input');
 const sendMessageButton = document.getElementById('send-message');
+const topbarAvatar = document.querySelector('.topbar-avatar');
 
-const BOT_DISPLAY_NAME = 'Gatinha da roça';
+const BOT_DISPLAY_NAME = 'Putinha da Roça';
 
 const INITIAL_VIDEO_URL = 'https://cdnflexionpay.com/static/uploads/122765/4560/f4648490-5569-45fc-9fa0-0175e44cf24d_f910d4e4-31bd-4e74-a9cf-0857fd17fe9e_5774a15f-0130-4c62-9991-5ceef12544ba.mp4';
 
@@ -32,6 +33,17 @@ let hasManualResponseBeenSent = false;
 
 function sleep(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function updateSendButtonIcon() {
+  if (!sendMessageButton || !messageInput) {
+    return;
+  }
+
+  const hasText = messageInput.value.trim().length > 0;
+  sendMessageButton.setAttribute('aria-label', hasText ? 'Enviar mensagem' : 'Gravar áudio');
+  sendMessageButton.querySelector('.icon-mic')?.classList.toggle('hidden', hasText);
+  sendMessageButton.querySelector('.icon-send')?.classList.toggle('hidden', !hasText);
 }
 
 function setChatHeader() {
@@ -89,10 +101,15 @@ function createBubble({
   media = null,
   id = null,
   statusText = '',
-  statusClass = ''
+  statusClass = '',
+  classNames = []
 }) {
   const bubble = document.createElement('article');
   bubble.className = `bubble is-${type}`;
+
+  if (classNames.length > 0) {
+    bubble.classList.add(...classNames);
+  }
 
   if (buttons.length > 0) {
     bubble.classList.add('with-reply-markup');
@@ -491,7 +508,8 @@ async function createPix(offerId, button) {
         }
       ],
       statusText: 'Status: aguardando pagamento',
-      statusClass: 'is-pending'
+      statusClass: 'is-pending',
+      classNames: ['is-payment']
     });
 
     scheduleRemarketing(payment.transactionId);
@@ -655,6 +673,7 @@ async function handleUserMessageSend() {
   }
 
   messageInput.value = '';
+  updateSendButtonIcon();
 
   addBubble({
     type: 'out',
@@ -723,6 +742,8 @@ chatBody.addEventListener('click', async (event) => {
 });
 
 sendMessageButton?.addEventListener('click', handleUserMessageSend);
+messageInput?.addEventListener('input', updateSendButtonIcon);
+updateSendButtonIcon();
 
 messageInput?.addEventListener('keydown', async (event) => {
   if (event.key !== 'Enter') {
@@ -731,6 +752,10 @@ messageInput?.addEventListener('keydown', async (event) => {
 
   event.preventDefault();
   await handleUserMessageSend();
+});
+
+topbarAvatar?.addEventListener('click', () => {
+  window.alert('Foto de perfil clicada.');
 });
 
 restartButton?.addEventListener('click', async () => {

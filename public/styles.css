@@ -108,10 +108,11 @@ button {
 
 /* Topbar flutuante */
 .topbar {
-  position: absolute;
-  top: calc(var(--chat-top-safe) + 14px);
-  left: 14px;
-  right: 14px;
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  margin: 14px 14px 0;
   height: 50px;
   z-index: 20;
   display: grid;
@@ -225,14 +226,14 @@ button {
 /* Área das mensagens */
 .chat-body {
   position: absolute;
-  inset: 0;
+  top: calc(var(--chat-top-safe) + 84px);
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding:
-    calc(var(--chat-top-safe) + 90px)
-    10px
-    calc(var(--chat-bottom-safe) + 92px);
+  padding: 0 10px calc(var(--chat-bottom-safe) + 92px);
   scroll-behavior: smooth;
 }
 
@@ -1930,6 +1931,41 @@ textarea {
 
 .bubble.media-enter .media-shell {
   animation: mediaPreviewIn 0.48s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+/* Ajustes finais do header e largura do PIX */
+.tg-chat > .topbar {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  margin: 14px 14px 0 !important;
+  width: auto !important;
+}
+
+.chat-body {
+  top: calc(var(--chat-top-safe) + 84px) !important;
+  padding: 0 10px calc(var(--chat-bottom-safe) + 92px) !important;
+}
+
+.bubble.is-payment .bubble-body {
+  max-width: calc(100% - 28px) !important;
+}
+
+.bubble.is-payment .quote-card {
+  width: 100%;
+}
+
+.chat-input-send .chat-input-send-icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-input-send .hidden {
+  display: none !important;
 }
 
 @keyframes mediaBubbleIn {
