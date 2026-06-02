@@ -35,16 +35,6 @@ function sleep(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
-function updateSendButtonIcon() {
-  if (!sendMessageButton || !messageInput) {
-    return;
-  }
-
-  const hasText = messageInput.value.trim().length > 0;
-  sendMessageButton.setAttribute('aria-label', hasText ? 'Enviar mensagem' : 'Gravar áudio');
-  sendMessageButton.querySelector('.icon-mic')?.classList.toggle('hidden', hasText);
-  sendMessageButton.querySelector('.icon-send')?.classList.toggle('hidden', !hasText);
-}
 
 function setChatHeader() {
   if (chatTitle) {
@@ -673,7 +663,6 @@ async function handleUserMessageSend() {
   }
 
   messageInput.value = '';
-  updateSendButtonIcon();
 
   addBubble({
     type: 'out',
@@ -742,8 +731,6 @@ chatBody.addEventListener('click', async (event) => {
 });
 
 sendMessageButton?.addEventListener('click', handleUserMessageSend);
-messageInput?.addEventListener('input', updateSendButtonIcon);
-updateSendButtonIcon();
 
 messageInput?.addEventListener('keydown', async (event) => {
   if (event.key !== 'Enter') {

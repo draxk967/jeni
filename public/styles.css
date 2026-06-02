@@ -1970,7 +1970,7 @@ textarea {
 
 /* Fixa o header como parte do conteúdo e desativa rolagem vertical */
 .tg-chat {
-  overflow: hidden !important;
+  overflow-x: hidden !important;
 }
 
 .topbar {
@@ -1987,7 +1987,8 @@ textarea {
   left: auto !important;
   right: auto !important;
   bottom: auto !important;
-  overflow-y: hidden !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   padding: 0 10px calc(var(--chat-bottom-safe) + 92px) !important;
   margin-top: 72px !important;
 }
