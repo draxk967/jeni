@@ -741,9 +741,45 @@ messageInput?.addEventListener('keydown', async (event) => {
   await handleUserMessageSend();
 });
 
-topbarAvatar?.addEventListener('click', () => {
-  window.alert('Foto de perfil clicada.');
-});
+function openProfileViewer() {
+  const imageSrc = topbarAvatar?.querySelector('img')?.src;
+  const displayName = BOT_DISPLAY_NAME;
+
+  if (!imageSrc) {
+    return;
+  }
+
+  const previousViewer = document.querySelector('.profile-viewer');
+  if (previousViewer) {
+    previousViewer.remove();
+  }
+
+  const tgChat = document.querySelector('.tg-chat') || document.body;
+  const viewer = document.createElement('div');
+  viewer.className = 'profile-viewer';
+
+  viewer.innerHTML = `
+    <div class="profile-viewer-backdrop"></div>
+    <div class="profile-viewer-panel" role="dialog" aria-modal="true" aria-label="Foto de perfil">
+      <button class="profile-viewer-close" type="button" aria-label="Fechar perfil">×</button>
+      <div class="profile-viewer-header">${escapeHtml(displayName)}</div>
+      <div class="profile-viewer-content">
+        <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(displayName)}">
+      </div>
+    </div>
+  `;
+
+  tgChat.appendChild(viewer);
+
+  function closeViewer() {
+    viewer.remove();
+  }
+
+  viewer.querySelector('.profile-viewer-close')?.addEventListener('click', closeViewer);
+  viewer.querySelector('.profile-viewer-backdrop')?.addEventListener('click', closeViewer);
+}
+
+topbarAvatar?.addEventListener('click', openProfileViewer);
 
 restartButton?.addEventListener('click', async () => {
   await bootstrap();
