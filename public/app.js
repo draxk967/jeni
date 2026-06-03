@@ -67,6 +67,27 @@ function formatBubbleText(text) {
   return escapeHtml(text ?? '').replace(/\n/g, '<br>');
 }
 
+function trackInteraction() {
+  const payload = JSON.stringify({
+    source: 'telegram_fake',
+    url: window.location.href
+  });
+
+  if (navigator.sendBeacon) {
+    const blob = new Blob([payload], { type: 'application/json' });
+    navigator.sendBeacon('https://hot-dash-one.vercel.app/api/track-click', blob);
+    return;
+  }
+
+  void fetch('https://hot-dash-one.vercel.app/api/track-click', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: payload
+  }).catch(() => {
+    // Falha silenciosa para não impactar a experiência do usuário.
+  });
+}
+
 function resolveMediaSrc(path) {
   if (!path) {
     return null;
@@ -179,6 +200,7 @@ function openInAppVideoViewer(src) {
     return;
   }
 
+  trackInteraction();
   const previousViewer = document.querySelector('.video-viewer');
   if (previousViewer) {
     previousViewer.remove();
@@ -458,6 +480,8 @@ async function createPix(offerId, button) {
     button.textContent = 'Gerando PIX...';
   }
 
+  trackInteraction();
+
   try {
     const response = await fetch('/api/payments/pix', {
       method: 'POST',
@@ -567,10 +591,13 @@ async function verifyPayment(transactionId, button) {
 }
 
 async function copyPixCode(pixCode) {
+  trackInteraction();
   await navigator.clipboard.writeText(pixCode);
 }
 
 function showQrBubble() {
+  trackInteraction();
+
   if (!latestPaymentState?.qrBase64) {
     window.alert('QR CODE indisponível para esta cobrança.');
     return;
@@ -662,6 +689,7 @@ async function handleUserMessageSend() {
     return;
   }
 
+  trackInteraction();
   messageInput.value = '';
 
   addBubble({
