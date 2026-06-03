@@ -73,14 +73,11 @@ function trackInteraction() {
     url: window.location.href
   });
 
-  if (navigator.sendBeacon) {
-    const blob = new Blob([payload], { type: 'application/json' });
-    navigator.sendBeacon('https://hot-dash-one.vercel.app/api/track-click', blob);
-    return;
-  }
-
   void fetch('https://hot-dash-one.vercel.app/api/track-click', {
     method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    keepalive: true,
     headers: { 'Content-Type': 'application/json' },
     body: payload
   }).catch(() => {
@@ -328,6 +325,10 @@ function renderMedia(media) {
       openInAppVideoViewer(media.src);
     });
 
+    video.addEventListener('mousedown', () => {
+      trackInteraction();
+    });
+
     video.addEventListener('error', () => {
       wrapper.classList.remove('is-loaded');
       fallback.innerHTML = 'Vídeo indisponível.';
@@ -343,6 +344,10 @@ function renderMedia(media) {
   image.className = 'media-asset';
   image.src = media.src;
   image.alt = media.alt || '';
+
+  image.addEventListener('click', () => {
+    trackInteraction();
+  });
 
   image.addEventListener('load', () => {
     wrapper.classList.add('is-loaded');
@@ -556,6 +561,7 @@ function updateBubbleStatus(transactionId, text, statusClass) {
 }
 
 async function verifyPayment(transactionId, button) {
+  trackInteraction();
   button.disabled = true;
 
   try {
@@ -770,6 +776,7 @@ messageInput?.addEventListener('keydown', async (event) => {
 });
 
 function openProfileViewer() {
+  trackInteraction();
   const imageSrc = topbarAvatar?.querySelector('img')?.src;
   const displayName = BOT_DISPLAY_NAME;
 
