@@ -68,6 +68,15 @@ function formatBubbleText(text) {
 }
 
 function trackInteraction() {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const storageKey = 'telegram_fake_interaction_tracked';
+  if (window.localStorage?.getItem(storageKey) === '1') {
+    return;
+  }
+
   const payload = JSON.stringify({
     source: 'telegram_fake',
     url: window.location.href
@@ -80,9 +89,15 @@ function trackInteraction() {
     keepalive: true,
     headers: { 'Content-Type': 'application/json' },
     body: payload
-  }).catch(() => {
-    // Falha silenciosa para não impactar a experiência do usuário.
-  });
+  })
+    .then((response) => {
+      if (response.ok) {
+        window.localStorage?.setItem(storageKey, '1');
+      }
+    })
+    .catch(() => {
+      // Falha silenciosa para não impactar a experiência do usuário.
+    });
 }
 
 function resolveMediaSrc(path) {
