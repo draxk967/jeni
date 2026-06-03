@@ -30,6 +30,7 @@ let flow = null;
 let remarketingTimerIds = [];
 let latestPaymentState = null;
 let hasManualResponseBeenSent = false;
+let hasTrackedInteraction = false;
 
 function sleep(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
@@ -73,9 +74,17 @@ function trackInteraction() {
   }
 
   const storageKey = 'telegram_fake_interaction_tracked';
-  if (window.localStorage?.getItem(storageKey) === '1') {
+  if (hasTrackedInteraction) {
     return;
   }
+
+  if (window.localStorage?.getItem(storageKey) === '1') {
+    hasTrackedInteraction = true;
+    return;
+  }
+
+  hasTrackedInteraction = true;
+  window.localStorage?.setItem(storageKey, '1');
 
   const payload = JSON.stringify({
     source: 'telegram_fake',
@@ -89,15 +98,9 @@ function trackInteraction() {
     keepalive: true,
     headers: { 'Content-Type': 'application/json' },
     body: payload
-  })
-    .then((response) => {
-      if (response.ok) {
-        window.localStorage?.setItem(storageKey, '1');
-      }
-    })
-    .catch(() => {
-      // Falha silenciosa para não impactar a experiência do usuário.
-    });
+  }).catch(() => {
+    // Falha silenciosa para não impactar a experiência do usuário.
+  });
 }
 
 function resolveMediaSrc(path) {
